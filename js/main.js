@@ -326,11 +326,30 @@
         kvWheelT = performance.now();
       }, { passive: false });
     } else {
-      /* —— 触屏交互：无 hover/滚轮，保持轮播形态自动滚动；
-         手指按住暂停（可看清当前画面），松开约 0.9s 后恢复 —— */
-      kvStage.addEventListener("touchstart", function () { kvHold = true; }, { passive: true });
-      kvStage.addEventListener("touchend", function () { setTimeout(function () { kvHold = false; }, 900); }, { passive: true });
-      kvStage.addEventListener("touchcancel", function () { setTimeout(function () { kvHold = false; }, 900); }, { passive: true });
+      /* —— 触屏交互：无 hover/滚轮。手指压在中轴图框列内 → 滑动直接
+         拖动轮播（跟手，方向与拖拽直觉一致），两侧留白 → 放行页面滚动；
+         按住即暂停自动滚，松开约 0.9s 后恢复 —— */
+      var kvTX = null, kvTY = null;
+      kvStage.addEventListener("touchstart", function (e) {
+        var t = e.touches[0];
+        kvTX = t.clientX; kvTY = t.clientY;
+        kvHold = true;
+      }, { passive: true });
+      kvStage.addEventListener("touchmove", function (e) {
+        if (kvTX === null) return;
+        var t = e.touches[0];
+        var dy = t.clientY - kvTY;
+        kvTX = t.clientX; kvTY = t.clientY;
+        var r = kvStage.getBoundingClientRect();
+        var px = t.clientX - r.left - r.width / 2;
+        /* 分区与桌面滚轮一致：列内接管（拖动轮播），列外留白放行页面滚动 */
+        if (Math.abs(px) > (kvKeepW || kvRing.offsetWidth) / 2) return;
+        e.preventDefault();
+        kvBase += dy;                 /* 手指下滑=内容下移（拖拽语义），跟手 */
+      }, { passive: false });
+      var kvRelease = function () { setTimeout(function () { kvHold = false; }, 900); };
+      kvStage.addEventListener("touchend", kvRelease, { passive: true });
+      kvStage.addEventListener("touchcancel", kvRelease, { passive: true });
     }
     (function kvLoop(now) {
       var dt = Math.min(now - kvLast, 50);   /* 钳制切后台回来的大步进 */

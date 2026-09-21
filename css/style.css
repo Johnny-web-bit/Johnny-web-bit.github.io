@@ -930,6 +930,10 @@ body.sub { background: var(--ink); color: var(--white); }
   .hero-title { font-size: clamp(44px, 12.6vw, 120px); padding: 0 5vw 9vh; }
   .works-head { font-size: clamp(40px, 10.4vw, 180px); padding: 0 5vw; }
   .works-head .outline { -webkit-text-stroke: 0; color: var(--ink); padding: 0 5vw; }   /* 手机上"作品"改实心黑 */
+  /* 触屏 tap 会留下粘滞 :hover，多个绝对定位说明同时浮现互相重叠 → 手机上隐藏 */
+  .sr-detail { display: none; }
+  /* 手机无 hover：底部大按钮直接呈现描边镂空版（桌面用 hover 滚动置换） */
+  .sub-cta .cta-line { -webkit-text-stroke: 2px var(--white); color: transparent; }
   .about-manifesto { font-size: clamp(32px, 9vw, 110px); }
   .contact-title { font-size: clamp(56px, 18vw, 340px); padding: 0 5vw; }
 
