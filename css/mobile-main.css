@@ -40,7 +40,8 @@
   /* —— 首页网格与大字 —— */
   .about-grid, .works-grid { grid-template-columns: 1fr; }
   .works-grid .work-card:nth-child(even) { margin-top: 0; }
-  .hero-title { font-size: clamp(44px, 12.6vw, 120px); padding: 0 5vw 9vh; }
+  .hero-title { font-size: clamp(44px, 12.6vw, 120px); padding: 0 5vw 9vh; text-align: center; }
+  .hero-title .l2 { text-align: center; }   /* 双行大标题居中，与顶部小字中轴对应 */
   .works-head { font-size: clamp(40px, 10.4vw, 180px); padding: 0 5vw; }
   .works-head .outline { -webkit-text-stroke: 0; color: var(--ink); padding: 0 5vw; }   /* "作品"改实心黑 */
   .about-manifesto { font-size: clamp(32px, 9vw, 110px); line-height: 1.14; }
