@@ -1,0 +1,83 @@
+/* ============================================================
+   Johnny's Portfolio — 主站移动端专属样式（≤820px）
+   独立文件：全新文件名 = 全新缓存键，绕开 style.css 被网络链路
+   （加速器/运营商节点）忽略版本参数缓存的问题。
+   手机端样式改动一律改这里（m.html 备用页另有自己的 css/mobile.css）。
+   ============================================================ */
+@media (max-width: 820px) {
+  /* —— 个人经历：标题在左、照片缩小放右侧（紧凑并排）—— */
+  .rs-hero { flex-direction: row-reverse; min-height: 0; gap: 5vw; align-items: flex-start; }
+  .rs-photo { width: 30vw; }
+  .rs-head { padding-top: 0; flex: 1; }
+  .rs-title { font-size: 16vw; }
+  .rs-meta { display: none; }   /* 散点 meta 与并排布局冲突，隐藏 */
+  .rs-photo figcaption { flex-wrap: wrap; gap: 8px; }   /* 窄图下标注不换行会撑破视口 */
+  .rs-block:nth-child(2), .rs-block:nth-child(3) { margin-left: 0; }
+  .rs-block { grid-template-columns: 1fr; gap: 20px; }
+  .rs-year { flex-basis: 84px; }
+
+  /* —— 灯箱 —— */
+  .lb-stage { padding: 9vh 5vw; }
+  .lb-prev { left: 12px; }
+  .lb-next { right: 12px; }
+
+  /* —— KV 轮播（平面设计 / 建模共用结构）—— */
+  .kv-section { --kv-w: min(320px, 72vw); }
+  .mdr-section { --kv-w: min(460px, 88vw); }
+  .kv-stage { touch-action: none; }   /* 舞台触摸完全交给轮播 JS，浏览器不抢做页面滚动 */
+
+  /* —— 习作/平面扇形：手机回退横滑 —— */
+  .strip-scroll { overflow-x: auto; padding-top: 120px; padding-bottom: 60px; }
+  .strip-stage { perspective: none; }
+  .strip { transform: none; }
+  .strip-item:hover { transform: translateY(-40px) scale(1.5); }
+
+  /* —— 品牌落体：2 列 —— */
+  .fall-grid { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+  .fall-card:nth-child(2), .fall-card:nth-child(5) { margin-top: 0; }
+  .fall-stage { padding: 30px 0 16px; }
+
+  /* —— 首页网格与大字 —— */
+  .about-grid, .works-grid { grid-template-columns: 1fr; }
+  .works-grid .work-card:nth-child(even) { margin-top: 0; }
+  .hero-title { font-size: clamp(44px, 12.6vw, 120px); padding: 0 5vw 9vh; }
+  .works-head { font-size: clamp(40px, 10.4vw, 180px); padding: 0 5vw; }
+  .works-head .outline { -webkit-text-stroke: 0; color: var(--ink); padding: 0 5vw; }   /* "作品"改实心黑 */
+  .about-manifesto { font-size: clamp(32px, 9vw, 110px); line-height: 1.14; }
+  .about-manifesto .em { -webkit-text-stroke: 0; color: var(--ink); }   /* 描边空心中文在手机上是墨团 */
+  .contact-title { font-size: clamp(56px, 18vw, 340px); padding: 0 5vw; }
+  .hero-tag { left: 0; right: 0; text-align: center; }   /* 顶部小字居中，对应大标题中轴 */
+  .hl1, .hl2 { display: none; }   /* 顶部散点标签与 hero-tag 同层挤在 12vh，隐藏 */
+
+  /* —— 触屏粘滞 :hover 事故规避 —— */
+  .sr-detail { display: none; }   /* 粘滞 hover 让多行浮动说明同时浮现互相重叠 */
+  /* 双层滚动置换结构在触屏上会因粘滞 hover 把两层同时拉出（双线错位穿插如栅栏）
+     → 彻底废掉双层，只留一层描边镂空字 */
+  .sub-cta .cta-ghost { display: none !important; }
+  .sub-cta .cta-line { transform: none !important; -webkit-text-stroke: 1.1px var(--white); color: transparent; }
+  .sub-cta:hover .cta-line { transform: none !important; }
+  .service-row:active { background: var(--paper); color: var(--black); }   /* 点击行即时反色 */
+  .work-card:active { transform: scale(0.985); }
+
+  /* —— 次级页 —— */
+  .sub-hero { min-height: 58vh; padding: 11vh 5vw 6vh; }   /* 压缩顶部大留白 */
+  .sub-title .cn { line-height: 1.08; }   /* 中文方块字放宽行高杜绝行行重叠 */
+  .rs-title { line-height: 1.06; }
+  .rs-title i { margin: 0 1vw; }
+  .sub-title .en { -webkit-text-stroke-width: 1.4px; }   /* 英文描边保留空心 */
+
+  /* —— 留白与导航 —— */
+  #about { padding: 10vh 6vw 12vh; }
+  #works { padding: 10vh 0 12vh; }
+  #works .works-grid { padding: 0 5vw; }
+  #services .service-row { padding: 3vh 5vw; }
+  #services .service-row:hover { padding-left: 6vw; }
+  .sec-head, .sec-head ~ * { margin-left: 0; }
+  .sec-head { padding: 0 5vw; }
+  #contact { overflow: hidden; }
+  .footer { padding: 26px 5vw; flex-direction: column; gap: 14px; }
+  .dock { max-width: calc(100vw - 16px); }
+  .dock-brand, .dock-cta { display: none; }
+  .dock-nav a { padding: 10px 12px; font-size: 12px; }
+  .talk-btn { margin-left: 5vw; }
+}
