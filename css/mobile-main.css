@@ -87,7 +87,8 @@
   #contact { overflow: hidden; }
   .footer { padding: 26px 5vw; flex-direction: column; gap: 14px; }
   .dock { max-width: calc(100vw - 16px); }
-  .dock-brand, .dock-cta { display: none; }
+  .dock-brand { display: inline-block; }   /* JN® LOGO 手机保留：回首页锚点 + 品牌识别 */
+  .dock-cta { display: none; }
   .dock-nav a { padding: 10px 12px; font-size: 12px; }
   .talk-btn { margin-left: 5vw; }
 }
