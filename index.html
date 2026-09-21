@@ -8,6 +8,13 @@
   <link rel="preload" href="assets/fonts/Archivo-var-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/Inter-var-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <script>
+    /* 手机访问自动进入手机版；带 ?full=1 或从 m.html 返回时保持完整版 */
+    if (window.matchMedia && window.matchMedia("(max-width: 820px)").matches &&
+        !/[?&]full=1/.test(location.search) && !sessionStorage.getItem("mSkip")) {
+      location.replace("m.html" + location.hash);
+    }
+  </script>
   <link rel="stylesheet" href="css/style.css?v=21" />
 </head>
 <body class="is-loading">
