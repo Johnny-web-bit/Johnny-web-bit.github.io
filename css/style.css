@@ -662,13 +662,8 @@ body.sub { background: var(--ink); color: var(--white); }
 .kv-card.on img { filter: grayscale(0) contrast(1.02); }
 @media (max-width: 820px) {
   .kv-section { --kv-w: min(320px, 72vw); }
-  /* 手机触屏无 hover，轮播 JS 不启动：静态兜底位置会超出舞台高度被裁切，
-     手机上退化为普通纵向图片列表——所有卡按原生比例完整显示 */
-  .kv-stage { height: auto; display: block; overflow: visible; padding: 0 5vw; }
-  .kv-stage::before, .kv-stage::after { display: none; }
-  .kv-card { position: static; height: auto; margin: 0 0 6vw; transform: none !important; }
-  .kv-inner { position: relative; left: auto; top: auto; width: 100%; height: auto; transform: none; }
-  .kv-inner img { height: auto; }
+  /* 手机上轮播 JS 照常启动（触屏分支：自动滚动 + 按住暂停），
+     保持与桌面一致的轮播形态，不再退化为静态列表 */
 }
 
 /* 建模页：同款 KV 结构但更大（5 张卡） */

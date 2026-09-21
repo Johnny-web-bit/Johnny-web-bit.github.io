@@ -228,7 +228,7 @@
         滚轮照常滚页面）；滚轮后 150ms 内焦点按纯几何命中跟随接力
      5. 焦点只放大不移动卡片 → 判定与运动解耦，无反馈回路 */
   var kvRing = document.getElementById("kvRing");
-  if (kvRing && finePointer && !reduced) {
+  if (kvRing && !reduced) {
     var kvCards = Array.prototype.slice.call(kvRing.querySelectorAll(".kv-card"));
     var kvN = kvCards.length;
     var kvStage = kvRing.parentNode;
@@ -240,6 +240,7 @@
     var kvLX = null, kvLY = null;         /* 上一事件的指针坐标（识别合成事件） */
     var kvMomentum = 0;                   /* 滚轮动量（deltaY>0 = 内容上移） */
     var kvWheelT = -1e4;                  /* 最近一次滚轮输入时刻 */
+    var kvHold = false;                   /* 触屏按住暂停（手机上保持轮播形态，手指按住即停） */
     var kvLast = performance.now();
     /* 周期化取模：把卡的位置折到 ±半周期内（折返点在视窗外，循环无缝） */
     function kvY(i, ringH, period) {
@@ -301,27 +302,36 @@
         }
       });
     }
-    kvStage.addEventListener("mousemove", function (e) {
-      var r = kvStage.getBoundingClientRect();
-      kvPx = e.clientX - r.left - r.width / 2;
-      kvPy = e.clientY - r.top - r.height / 2;
-      kvInside = true;
-      /* 坐标没变 = 滚动/轮播运动引发的合成事件，不算"主动移入"；
-         首个事件来历不明，同样不算 */
-      kvSeek = kvLX !== null && (e.clientX !== kvLX || e.clientY !== kvLY);
-      kvLX = e.clientX; kvLY = e.clientY;
-    }, { passive: true });
-    kvStage.addEventListener("mouseleave", function () { kvInside = false; });
-    kvStage.addEventListener("wheel", function (e) {
-      /* 仅当指针压在中轴图框列内时接管滚轮驱动轮播；
-         列外（两侧留白）滚轮照常滚动页面 */
-      if (Math.abs(kvPx) > (kvKeepW || kvRing.offsetWidth) / 2) return;
-      e.preventDefault();
-      kvMomentum += e.deltaY;
-      if (kvMomentum > 420) kvMomentum = 420;
-      if (kvMomentum < -420) kvMomentum = -420;
-      kvWheelT = performance.now();
-    }, { passive: false });
+    if (finePointer) {
+      /* —— 桌面交互：指针主导 + 几何命中 + 图框列上滚轮驱动 —— */
+      kvStage.addEventListener("mousemove", function (e) {
+        var r = kvStage.getBoundingClientRect();
+        kvPx = e.clientX - r.left - r.width / 2;
+        kvPy = e.clientY - r.top - r.height / 2;
+        kvInside = true;
+        /* 坐标没变 = 滚动/轮播运动引发的合成事件，不算"主动移入"；
+           首个事件来历不明，同样不算 */
+        kvSeek = kvLX !== null && (e.clientX !== kvLX || e.clientY !== kvLY);
+        kvLX = e.clientX; kvLY = e.clientY;
+      }, { passive: true });
+      kvStage.addEventListener("mouseleave", function () { kvInside = false; });
+      kvStage.addEventListener("wheel", function (e) {
+        /* 仅当指针压在中轴图框列内时接管滚轮驱动轮播；
+           列外（两侧留白）滚轮照常滚动页面 */
+        if (Math.abs(kvPx) > (kvKeepW || kvRing.offsetWidth) / 2) return;
+        e.preventDefault();
+        kvMomentum += e.deltaY;
+        if (kvMomentum > 420) kvMomentum = 420;
+        if (kvMomentum < -420) kvMomentum = -420;
+        kvWheelT = performance.now();
+      }, { passive: false });
+    } else {
+      /* —— 触屏交互：无 hover/滚轮，保持轮播形态自动滚动；
+         手指按住暂停（可看清当前画面），松开约 0.9s 后恢复 —— */
+      kvStage.addEventListener("touchstart", function () { kvHold = true; }, { passive: true });
+      kvStage.addEventListener("touchend", function () { setTimeout(function () { kvHold = false; }, 900); }, { passive: true });
+      kvStage.addEventListener("touchcancel", function () { setTimeout(function () { kvHold = false; }, 900); }, { passive: true });
+    }
     (function kvLoop(now) {
       var dt = Math.min(now - kvLast, 50);   /* 钳制切后台回来的大步进 */
       kvLast = now;
@@ -335,8 +345,8 @@
       } else {
         kvMomentum = 0;
       }
-      if (kvFocus < 0 && kvMomentum === 0) {
-        kvBase -= dt * 0.03;                 /* ≈30px/s 缓慢自动滚动（不在图框上就滚） */
+      if (kvFocus < 0 && kvMomentum === 0 && !kvHold) {
+        kvBase -= dt * 0.03;                 /* ≈30px/s 缓慢自动滚动（不在图框上/未按住就滚） */
       }
       /* 焦点判定：横向必须在中轴图框列内（否则横向移出无法释放），
          纵向精确到卡带边缘；捕获仅由真实移入或滚轮窗口触发，移出立即释放 */
