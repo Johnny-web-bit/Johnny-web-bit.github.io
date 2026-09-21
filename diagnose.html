@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>网站诊断</title>
+<style>
+  body { background:#0a0a0a; color:#fff; font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; padding:24px; font-size:15px; line-height:2; }
+  h1 { font-size:20px; margin-bottom:16px; }
+  ul { list-style:none; }
+  .ok { color:#4ade80; } .bad { color:#f87171; }
+  pre { white-space:pre-wrap; word-break:break-all; color:#aaa; font-size:11px; margin-top:16px; border-top:1px solid #333; padding-top:12px; }
+  .tip { color:#888; font-size:13px; margin-top:12px; }
+</style>
+</head>
+<body>
+<h1>网站诊断（截图发回即可）</h1>
+<ul id="list"></ul>
+<p class="tip">本页自动检测，无需操作。检测约 2 秒完成。</p>
+<pre id="raw"></pre>
+<script>
+var L = document.getElementById("list");
+function add(label, ok, detail) {
+  var li = document.createElement("li");
+  li.innerHTML = label + ": <b class='" + (ok ? "ok" : "bad") + "'>" + (ok ? "✓ 正常" : "✗ 异常") + "</b>" + (detail ? " <span style='color:#888;font-size:12px'>(" + detail + ")</span>" : "");
+  L.appendChild(li);
+}
+var w = window.innerWidth, h = window.innerHeight;
+add("屏幕宽度 " + w + "px", w > 0, "视口高 " + h);
+add("JS 运行中", true, "能看到本行即 JS 正常");
+add("动效引擎 IntersectionObserver", typeof IntersectionObserver !== "undefined");
+add("动画引擎 requestAnimationFrame", typeof requestAnimationFrame !== "undefined");
+add("媒体查询 matchMedia", typeof window.matchMedia !== "undefined");
+add("字体加载 API", typeof document.fonts !== "undefined");
+var t = document.createElement("div");
+t.style.cssText = "position:fixed;left:-999px;font-size:100px;";
+document.body.appendChild(t);
+var fs = parseFloat(getComputedStyle(t).fontSize);
+add("CSS 引擎", fs === 100, "字号计算 " + fs + "px");
+t.remove();
+fetch("/?diag=" + Date.now(), {cache:"no-store"}).then(function(r){return r.text()}).then(function(txt){
+  var hasRedirect = txt.indexOf("location.replace") > -1;
+  var hasV21 = txt.indexOf("style.css?v=21") > -1;
+  add("首页为新版本", hasV21 && !hasRedirect, hasRedirect ? "仍在返回旧版——浏览器/网络缓存劫持" : "最新版已生效");
+  add("首页内容完整", txt.indexOf("hero-title") > -1);
+}).catch(function(e){ add("首页拉取", false, String(e).slice(0,60)); });
+document.getElementById("raw").textContent = navigator.userAgent;
+</script>
+</body>
+</html>
