@@ -51,13 +51,17 @@
 
   /* —— 触屏粘滞 :hover 事故规避 —— */
   .sr-detail { display: none; }   /* 粘滞 hover 让多行浮动说明同时浮现互相重叠 */
-  /* 双层滚动置换结构在触屏上会因粘滞 hover 把两层同时拉出（双线错位穿插如栅栏）
-     → 彻底废掉双层，只留一层描边镂空字 */
+  /* 双层滚动置换结构在触屏上会因粘滞 hover 把两层同时拉出（双线错位如栅栏）
+     → 彻底废掉双层。且 WebKit 对"中文粗体+描边"渲染出双线错位（浏览器缺陷，
+     任何描边宽度都救不了）→ 手机端用实心白字，稳定且干净 */
   .sub-cta .cta-ghost { display: none !important; }
-  .sub-cta .cta-line { transform: none !important; -webkit-text-stroke: 1.1px var(--white); color: transparent; }
+  .sub-cta .cta-line { transform: none !important; -webkit-text-stroke: 0; color: var(--white); }
   .sub-cta:hover .cta-line { transform: none !important; }
   .service-row:active { background: var(--paper); color: var(--black); }   /* 点击行即时反色 */
   .work-card:active { transform: scale(0.985); }
+  /* 扇形卡在触屏上用 :active 轻反馈；:hover 的放大 1.5 会被粘滞触发干扰滑动 */
+  .strip-item:hover { transform: none; }
+  .strip-item:active { transform: scale(0.97); }
 
   /* —— 次级页 —— */
   .sub-hero { min-height: 58vh; padding: 11vh 5vw 6vh; }   /* 压缩顶部大留白 */

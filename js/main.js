@@ -787,6 +787,37 @@
     })();
   }
 
+  /* ---------- 手机端：海报横滑列表的果冻挤压（触屏专属） ----------
+     左右滑动横滑列表时，滑动速度经低通滤波驱动软弹簧形变：
+     拖动方向压缩（横向压扁、纵向微胀，体积守恒），松手后缓慢回弹归零。
+     桌面不受影响（finePointer 才有 3D 扇形）。 */
+  if (!finePointer && !reduced) {
+    document.querySelectorAll(".strip-scroll").forEach(function (sc) {
+      var inner = sc.querySelector(".strip");
+      if (!inner) return;
+      var lastX = sc.scrollLeft, vel = 0, sq = 0, rafOn = false;
+      sc.addEventListener("scroll", function () {
+        var dx = sc.scrollLeft - lastX;
+        lastX = sc.scrollLeft;
+        vel = vel * 0.65 + dx * 0.35;
+        if (!rafOn) { rafOn = true; requestAnimationFrame(jLoop); }
+      }, { passive: true });
+      function jLoop() {
+        var sqT = Math.min(0.16, Math.abs(vel) * 0.0035);
+        sq += (sqT - sq) * 0.11;
+        vel *= 0.86;
+        if (sq > 0.004) {
+          inner.style.transform =
+            "scale(" + (1 - sq).toFixed(3) + "," + (1 + sq * 0.7).toFixed(3) + ")";
+          requestAnimationFrame(jLoop);
+        } else {
+          inner.style.transform = "";
+          rafOn = false;
+        }
+      }
+    });
+  }
+
   /* ---------- 磁性按钮 ---------- */
   if (finePointer && !reduced) {
     document.querySelectorAll(".magnetic").forEach(function (el) {
