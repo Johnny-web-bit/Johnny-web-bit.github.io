@@ -340,10 +340,8 @@
         var t = e.touches[0];
         var dy = t.clientY - kvTY;
         kvTX = t.clientX; kvTY = t.clientY;
-        var r = kvStage.getBoundingClientRect();
-        var px = t.clientX - r.left - r.width / 2;
-        /* 分区与桌面滚轮一致：列内接管（拖动轮播），列外留白放行页面滚动 */
-        if (Math.abs(px) > (kvKeepW || kvRing.offsetWidth) / 2) return;
+        /* touch-action:none 已禁止浏览器接管（820 断点），preventDefault 双保险；
+           整个舞台的手指拖动都驱动轮播，页面滚动走舞台以外区域 */
         e.preventDefault();
         kvBase += dy;                 /* 手指下滑=内容下移（拖拽语义），跟手 */
       }, { passive: false });

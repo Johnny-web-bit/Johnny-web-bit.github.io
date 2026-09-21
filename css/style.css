@@ -934,6 +934,10 @@ body.sub { background: var(--ink); color: var(--white); }
   .sr-detail { display: none; }
   /* 手机无 hover：底部大按钮直接呈现描边镂空版（桌面用 hover 滚动置换） */
   .sub-cta .cta-line { -webkit-text-stroke: 2px var(--white); color: transparent; }
+  /* 次级页顶部：92vh 几乎满屏、标题沉底 → 手机上压缩留白 */
+  .sub-hero { min-height: 58vh; padding: 11vh 5vw 6vh; }
+  /* 舞台触摸完全交给轮播 JS（浏览器不再抢做页面滚动，拖动跟手） */
+  .kv-stage { touch-action: none; }
   .about-manifesto { font-size: clamp(32px, 9vw, 110px); }
   .contact-title { font-size: clamp(56px, 18vw, 340px); padding: 0 5vw; }
 
