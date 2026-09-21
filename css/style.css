@@ -307,7 +307,7 @@ section { position: relative; }
 }
 .rs-photo.in figcaption { opacity: 1; }
 /* 标题：右对齐两行 + 下方英文，与照片完全分离零遮挡 */
-.rs-head { text-align: right; flex: 1; padding-top: 3vh; }
+.rs-head { text-align: left; flex: 1; padding-top: 3vh; }
 .rs-title {
   font-size: clamp(80px, 11vw, 200px);
   line-height: 0.94; letter-spacing: -0.02em;

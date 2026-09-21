@@ -8,7 +8,7 @@
   /* —— 个人经历：标题在左、照片缩小放右侧（紧凑并排）—— */
   .rs-hero { flex-direction: row-reverse; min-height: 0; gap: 5vw; align-items: flex-start; }
   .rs-photo { width: 30vw; }
-  .rs-head { padding-top: 0; flex: 1; }
+  .rs-head { padding-top: 0; flex: 1; text-align: left; }   /* "个人经历"左对齐 */
   .rs-title { font-size: 16vw; }
   .rs-meta { display: none; }   /* 散点 meta 与并排布局冲突，隐藏 */
   .rs-photo figcaption { flex-wrap: wrap; gap: 8px; }   /* 窄图下标注不换行会撑破视口 */
