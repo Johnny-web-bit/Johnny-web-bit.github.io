@@ -328,12 +328,14 @@
       }, { passive: false });
     } else {
       /* —— 触屏交互：无 hover/滚轮。手指压在中轴图框列内 → 滑动直接
-         拖动轮播（跟手，方向与拖拽直觉一致），两侧留白 → 放行页面滚动；
-         按住即暂停自动滚，松开约 0.9s 后恢复 —— */
+         拖动轮播：touchmove 只累加目标位移，渲染循环里弹簧插值逼近
+         （逐事件硬写会有锯齿），松手后带惯性衰减；按住暂停自动滚 —— */
       var kvTX = null, kvTY = null;
+      var kvDragTarget = 0;
       kvStage.addEventListener("touchstart", function (e) {
         var t = e.touches[0];
         kvTX = t.clientX; kvTY = t.clientY;
+        kvDragTarget = kvBase;
         kvHold = true;
       }, { passive: true });
       kvStage.addEventListener("touchmove", function (e) {
@@ -341,15 +343,19 @@
         var t = e.touches[0];
         var dy = t.clientY - kvTY;
         kvTX = t.clientX; kvTY = t.clientY;
-        kvVel = kvVel * 0.65 + dy * 0.35;   /* 拖动速度（低通滤波，供果冻形变用） */
+        kvVel = kvVel * 0.65 + dy * 0.35;   /* 拖动速度（低通滤波，供果冻形变与惯性用） */
         /* touch-action:none 已禁止浏览器接管（820 断点），preventDefault 双保险；
            整个舞台的手指拖动都驱动轮播，页面滚动走舞台以外区域 */
         e.preventDefault();
-        kvBase += dy;                 /* 手指下滑=内容下移（拖拽语义），跟手 */
+        kvDragTarget += dy;           /* 手指下滑=内容下移（拖拽语义） */
       }, { passive: false });
       var kvRelease = function () { setTimeout(function () { kvHold = false; }, 900); };
       kvStage.addEventListener("touchend", kvRelease, { passive: true });
       kvStage.addEventListener("touchcancel", kvRelease, { passive: true });
+      /* 触屏上"开始项目"只留文字（箭头由桌面 hover 语言携带，触屏显多余） */
+      document.querySelectorAll(".sub-cta .cta-line").forEach(function (el) {
+        el.textContent = el.textContent.replace("↗", "").trim();
+      });
     }
     (function kvLoop(now) {
       var dt = Math.min(now - kvLast, 50);   /* 钳制切后台回来的大步进 */
@@ -394,11 +400,24 @@
         kvCards.forEach(function (c, kk) { c.classList.toggle("on", kk === hit); });
       }
       /* 纯纵向循环滚动：无透视变形（用户要求去除滚筒透视）。
-         触屏拖动时叠加果冻挤压（软弹簧，体积守恒）——越靠舞台边缘压得越深，
-         像被边缘"吸进去"的绵软形变；松手后自然回弹归零 */
-      var sqT = (!finePointer && kvHold) ? Math.min(0.3, Math.abs(kvVel) * 0.014) : 0;
+         触屏拖动：渲染循环以弹簧插值逼近手指目标位（丝滑跟手）；
+         松手后 kvVel 转惯性滑动自然衰减。果冻挤压（软弹簧，体积守恒）：
+         越靠舞台边缘压得越深，像被边缘"吸进去"；松手后回弹归零 */
+      if (!finePointer && kvHold) {
+        kvBase += (kvDragTarget - kvBase) * 0.3;          /* 拖动平滑插值 */
+      } else if (!finePointer) {
+        if (Math.abs(kvVel) > 0.5) {
+          kvBase += kvVel * dt * 0.062;                   /* 松手惯性滑动 */
+        }
+        kvVel *= 0.94;                                    /* 速度自然衰减（果冻随之回弹） */
+      }
+      if (kvFocus < 0 && kvMomentum === 0 && !kvHold) {
+        kvBase -= dt * 0.03;                 /* ≈30px/s 缓慢自动滚动（不在图框上/未按住就滚） */
+      }
+      /* 果冻挤压（软弹簧，体积守恒）：拖动速度驱动，越靠舞台边缘压得越深；
+         松手后速度自然衰减，形变随之回弹归零 */
+      var sqT = (!finePointer) ? Math.min(0.3, Math.abs(kvVel) * 0.014) : 0;
       kvSq += (sqT - kvSq) * 0.085;
-      kvVel *= 0.9;
       var edgeHalf = (ringH + kvGap) * 2;
       for (var i = 0; i < kvN; i++) {
         var y = kvY(i, ringH, period);
