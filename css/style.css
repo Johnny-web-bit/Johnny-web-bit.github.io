@@ -894,22 +894,58 @@ body.sub { background: var(--ink); color: var(--white); }
 .reveal.in { opacity: 1; transform: translateY(0); }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
-  .hero-title .line-inner { transform: none; }
-  #loader .line-inner { transform: none; }
+  /* 温和可达性：保留淡入淡出，仅去除位移/视差/无限循环动画——
+     系统开"减弱动态"的用户依然能看到页面的呼吸感，而非完全静止 */
+  .hero-bg img { transform: none; transition: none; }
+  .hero-title .line-inner, #loader .line-inner {
+    transform: none; opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+  }
+  body.is-loaded .hero-title .line-inner, #loader.w1 .l1 .line-inner, #loader.w2 .l2 .line-inner { opacity: 1; }
+  #loader.done .loader-word { opacity: 0; transition: opacity 0.5s; }
+  .reveal { opacity: 0; transform: none; transition: opacity 0.6s var(--ease-out); transition-delay: var(--d, 0s); }
+  .reveal.in { opacity: 1; }
+  .marquee-track, .hl, .hero-scroll { animation: none !important; }
+  .rs-title i { transform: none; }
+  .ph-frame { clip-path: none; }
+  .ph-frame img { transform: translateY(-9%); filter: grayscale(1) contrast(1.15); }
+  .rs-en.reveal { opacity: 1; letter-spacing: 0.32em; }
+  .rs-item::before { transform: scaleX(1); }
+  .rs-photo figcaption { opacity: 1; }
 }
 
-/* ---------- 响应式 ---------- */
+/* ---------- 响应式（手机排版精修：留白加大、大字收敛、触屏反馈） ---------- */
 @media (max-width: 820px) {
   .about-grid, .works-grid { grid-template-columns: 1fr; }
   .works-grid .work-card:nth-child(even) { margin-top: 0; }
-  .hero-title { font-size: clamp(52px, 12.6vw, 120px); }
+
+  /* 大标题字号下限下调 + 呼吸留白 */
+  .hero-title { font-size: clamp(44px, 12.6vw, 120px); padding: 0 5vw 9vh; }
+  .works-head { font-size: clamp(40px, 10.4vw, 180px); padding: 0 5vw; }
+  .works-head .outline { padding: 0 5vw; }
+  .about-manifesto { font-size: clamp(32px, 9vw, 110px); }
+  .contact-title { font-size: clamp(56px, 18vw, 340px); padding: 0 5vw; }
+
+  /* 区块留白：手机上 2vw(8px) 过窄，统一 5-6vw */
+  #about { padding: 10vh 6vw 12vh; }
+  #works { padding: 10vh 0 12vh; }
+  #works .works-grid { padding: 0 5vw; }
+  #services .service-row { padding: 3vh 5vw; }
+  #services .service-row:hover { padding-left: 6vw; }
+  .sec-head, .sec-head ~ * { margin-left: 0; }
+  .sec-head { padding: 0 5vw; }
+  #contact { overflow: hidden; }
+  .footer { padding: 26px 5vw; }
+
+  /* 触屏点击反馈（手机没有 hover，点击行/卡时给即时反色） */
+  .service-row:active { background: var(--paper); color: var(--black); }
+  .work-card:active { transform: scale(0.985); }
+
   .hl1 { left: 6vw; right: 6vw; top: 12vh; }
   .hl2 { right: 2vw; top: 12vh; }
-  .dock { max-width: calc(100vw - 24px); }
+  .dock { max-width: calc(100vw - 16px); }
   .dock-brand, .dock-cta { display: none; }
-  .dock-nav a { padding: 10px 14px; }
-  .talk-btn { margin-left: 2vw; }
+  .dock-nav a { padding: 10px 12px; font-size: 12px; }
+  .talk-btn { margin-left: 5vw; }
   .footer { flex-direction: column; gap: 14px; }
 }

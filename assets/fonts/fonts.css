@@ -1,0 +1,19 @@
+/* 本地字体（替代 Google Fonts CDN——国内手机网络无法访问 fonts.googleapis.com，
+   曾导致字体请求阻塞渲染、回退字体造成排版错乱）。
+   两个文件均为可变字体：Archivo 覆盖 wght 100-900 / wdth 62-125%，
+   Inter 覆盖 wght 400-600。合计 135KB，随站点同源加载，秒出。 */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('Archivo-var-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('Inter-var-latin.woff2') format('woff2');
+}
