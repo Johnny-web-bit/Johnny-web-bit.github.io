@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Johnny's Portfolio</title>
+  <meta name="description" content="Johnny — 视觉设计与前端开发个人作品集" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=19" />
+</head>
+<body class="is-loading">
+
+  <!-- 自定义光标 -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- 加载页 -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-word display">
+      <span class="line l1"><span class="line-inner">JOHNNY'S</span></span>
+      <span class="line l2"><span class="line-inner">PORTFOLIO</span></span>
+    </div>
+    <div class="loader-bar"><span id="loaderFill"></span></div>
+    <div class="loader-pct" id="loaderPct">0</div>
+  </div>
+
+  <!-- 底部液态玻璃导航 Dock -->
+  <header class="dock" id="dock">
+    <a class="dock-brand display" href="#hero">JN<span>®</span></a>
+    <nav class="dock-nav">
+      <a href="#about" data-sec="about">关于</a>
+      <a href="#works" data-sec="works">作品</a>
+      <a href="#services" data-sec="services">能力</a>
+      <a href="#contact" data-sec="contact">联系</a>
+    </nav>
+    <a class="dock-cta magnetic" href="mailto:617111647@qq.com">开始项目 ↗</a>
+  </header>
+
+  <main>
+    <!-- 01 HERO -->
+    <section id="hero">
+      <div class="hero-bg" id="heroBg">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=abstract%20macro%20photography%20of%20liquid%20chrome%20bubbles%20under%20frosted%20textured%20glass%2C%20black%20and%20white%20monochrome%2C%20high%20contrast%2C%20dark%20moody%2C%20reflective%20metallic%20surface%2C%20cinematic%20lighting%2C%20editorial%20magazine%20style&image_size=landscape_16_9" alt="" />
+      </div>
+
+      <h1 class="hero-title display">
+        <span class="line l1"><span class="line-inner">JOHNNY'S</span></span>
+        <span class="line l2"><span class="line-inner">PORTFOLIO</span></span>
+      </h1>
+
+      <p class="hero-tag">视觉设计 × VIBE CODING<br />VISUAL DESIGN × VIBE CODING</p>
+
+      <div class="hero-labels">
+        <span class="hl hl1">FOLIO<br />2026®</span>
+        <span class="hl hl2">BASED IN<br />SHANGHAI</span>
+      </div>
+
+      <a class="hero-scroll" href="#about">SCROLL ↓</a>
+    </section>
+
+    <!-- 跑马灯 -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track display">
+        <span>JOHNNY'S PORTFOLIO ® — VISUAL DESIGN — FRONT-END — BRANDING —&nbsp;</span><span>JOHNNY'S PORTFOLIO ® — VISUAL DESIGN — FRONT-END — BRANDING —&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- 02 ABOUT -->
+    <section id="about">
+      <div class="sec-head reveal">
+        <span class="sec-no">01</span>
+        <span class="sec-tag">ABOUT — 关于</span>
+      </div>
+      <div class="about-grid">
+        <h2 class="about-manifesto display reveal">
+          在黑白之间，<br />
+          构建<span class="em">克制而张扬</span>的<br />
+          视觉秩序。
+        </h2>
+        <div class="about-info reveal" style="--d:.15s">
+          <p>我是 Johnny，一名专注于视觉设计与前端开发的独立创作者。我相信留白与对比的力量——用最少的元素，传达最准确的讯息。</p>
+          <dl>
+            <div><dt>方向</dt><dd>视觉 / VIBE CODING / 品牌</dd></div>
+            <div><dt>地点</dt><dd>中国 · 上海</dd></div>
+            <div><dt>状态</dt><dd>Freelancer</dd></div>
+            <div><dt>邮箱</dt><dd>617111647@qq.com</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 RESUME 项目经历 -->
+    <section id="resume">
+      <div class="sec-head reveal">
+        <span class="sec-no">02</span>
+        <span class="sec-tag">EXPERIENCE — 项目经历</span>
+      </div>
+
+      <div class="rs-hero">
+        <figure class="rs-photo reveal">
+          <!-- TODO: 将人物照片保存为 assets/johnny-portrait.jpg -->
+          <div class="ph-frame">
+            <img src="assets/johnny-portrait.jpg" alt="Johnny 个人照片" />
+          </div>
+          <figcaption><span>JOHNNY</span><span>SHANGHAI · CN</span></figcaption>
+        </figure>
+        <div class="rs-head">
+          <h2 class="rs-title display reveal" aria-label="个人经历">
+            <span class="row"><i>个</i><i>人</i></span>
+            <span class="row"><i>经</i><i>历</i></span>
+          </h2>
+          <p class="rs-en reveal" style="--d:.1s">PROJECT EXPERIENCE</p>
+        </div>
+        <div class="rs-meta reveal" style="--d:.15s">
+          <span>GRAPHIC DESIGNER</span>
+          <span>VIBE CODING</span>
+          <span>2023 — 2026©</span>
+        </div>
+      </div>
+
+      <div class="rs-blocks">
+        <div class="rs-block reveal">
+          <span class="rs-no display" aria-hidden="true">01</span>
+          <div class="rs-body">
+            <h3 class="display">教育经历<em>EDUCATION</em></h3>
+            <div class="rs-item">
+              <span class="rs-year display">2019–23</span>
+              <p>广西师范大学 · 绘画学（商业插画）<br />学士学位</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rs-block reveal" style="--d:.06s">
+          <span class="rs-no display" aria-hidden="true">02</span>
+          <div class="rs-body">
+            <h3 class="display">工作经历<em>WORK EXPERIENCE</em></h3>
+            <div class="rs-item">
+              <span class="rs-year display">2023–24</span>
+              <p><b>Freelance Graphic Designer</b><br />为留学公司、供应商制作相关视觉输出</p>
+            </div>
+            <div class="rs-item">
+              <span class="rs-year display">2025–26</span>
+              <p><b>eisei 设计师 · 市场部</b><br />为德国 Toplite 公司及旗下品牌制作视觉物料<br />eisei 亚太区域从 0 到 1 产出线上、线下市场所需的所有视觉</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rs-block reveal" style="--d:.12s">
+          <span class="rs-no display" aria-hidden="true">03</span>
+          <div class="rs-body">
+            <h3 class="display">项目经历<em>PROJECTS</em></h3>
+            <div class="rs-item">
+              <span class="rs-year display">2023–24</span>
+              <p>新加坡首都学院教育硕士招生手册<br />新加坡、马来西亚博士站招生简章<br />敦阿都拉萨大学招生手册</p>
+            </div>
+            <div class="rs-item">
+              <span class="rs-year display">2025–26</span>
+              <p>eisei 公众号视觉搭建 · 小程序视觉搭建<br />eisei 产品手册（画册）· 小红书图文<br />eisei 网页设计（DEMO）· 日常营销、活动海报<br />eisei 活动 KV · 展会物料 · 产品周边物料</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SERVICES 能力（上移至精选作品之前 · 黑底） -->
+    <section id="services">
+      <div class="sec-head reveal">
+        <span class="sec-no">03</span>
+        <span class="sec-tag">CAPABILITIES — 能力</span>
+      </div>
+      <ul class="service-list">
+        <li class="service-row reveal" style="--d:.0s" data-href="graphic-design.html">
+          <span class="sr-no">01</span>
+          <a class="sr-name display" href="graphic-design.html">平面设计<em>GRAPHIC DESIGN</em>
+            <span class="sr-detail">
+              <span class="pop-cn">日常类、营销类海报以及其他视觉输出</span>
+              <span class="pop-en">Daily &amp; marketing posters and other visual outputs</span>
+            </span>
+          </a>
+          <span class="sr-arrow">→</span>
+        </li>
+        <li class="service-row reveal" style="--d:.06s" data-href="brand-design.html">
+          <span class="sr-no">02</span>
+          <a class="sr-name display" href="brand-design.html">品牌设计<em>BRAND DESIGN</em>
+            <span class="sr-detail">
+              <span class="pop-cn">德国 Toplite 公司品牌形象升级</span>
+              <span class="pop-en">Brand identity upgrade for German TOPlite</span>
+            </span>
+          </a>
+          <span class="sr-arrow">→</span>
+        </li>
+        <li class="service-row reveal" style="--d:.12s" data-href="material-design.html">
+          <span class="sr-no">03</span>
+          <a class="sr-name display" href="material-design.html">物料设计<em>MATERIAL DESIGN</em>
+            <span class="sr-detail">
+              <span class="pop-cn">产品周边物料以及其他物料</span>
+              <span class="pop-en">Product peripherals and other collateral materials</span>
+            </span>
+          </a>
+          <span class="sr-arrow">→</span>
+        </li>
+        <li class="service-row reveal" style="--d:.18s" data-href="modeling.html">
+          <span class="sr-no">04</span>
+          <a class="sr-name display" href="modeling.html">建模<em>MODELING</em>
+            <span class="sr-detail">
+              <span class="pop-cn">物料打样大货模型</span>
+              <span class="pop-en">Sampling &amp; mass-production models</span>
+            </span>
+          </a>
+          <span class="sr-arrow">→</span>
+        </li>
+        <li class="service-row reveal" style="--d:.24s" data-href="practice.html">
+          <span class="sr-no">05</span>
+          <a class="sr-name display" href="practice.html">习作展示<em>PRACTICE</em>
+            <span class="sr-detail">
+              <span class="pop-cn">日常习作展示</span>
+              <span class="pop-en">Daily practice showcase</span>
+            </span>
+          </a>
+          <span class="sr-arrow">→</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 04 WORKS -->
+    <section id="works">
+      <div class="sec-head reveal">
+        <span class="sec-no">04</span>
+        <span class="sec-tag">SELECTED WORKS — 精选 04</span>
+      </div>
+      <h2 class="works-head display reveal">精选<span class="outline">作品</span></h2>
+
+      <div class="works-grid">
+        <article class="work-card glass reveal">
+          <figure>
+            <img src="assets/works/w01.jpg" alt="POSTER 项目视觉" loading="lazy" />
+          </figure>
+          <div class="work-meta"><span>01</span><span>3D / 视觉</span><span>2026</span></div>
+          <h3 class="work-title display">POSTER</h3>
+        </article>
+
+        <article class="work-card glass reveal" style="--d:.1s">
+          <figure>
+            <img src="assets/works/w02.jpg" alt="MATERIAL 项目视觉" loading="lazy" />
+          </figure>
+          <div class="work-meta"><span>02</span><span>品牌 / 质感</span><span>2025</span></div>
+          <h3 class="work-title display">MATERIAL</h3>
+        </article>
+
+        <article class="work-card glass reveal" style="--d:.05s">
+          <figure>
+            <img src="assets/works/w03.jpg" alt="MODELING 项目视觉" loading="lazy" />
+          </figure>
+          <div class="work-meta"><span>03</span><span>空间 / 摄影</span><span>2025</span></div>
+          <h3 class="work-title display">MODELING</h3>
+        </article>
+
+        <article class="work-card glass reveal" style="--d:.15s">
+          <figure>
+            <img src="assets/works/w04.jpg" alt="PRACTICE 项目视觉" loading="lazy" />
+          </figure>
+          <div class="work-meta"><span>04</span><span>编辑 / 排版</span><span>2024</span></div>
+          <h3 class="work-title display">PRACTICE</h3>
+        </article>
+      </div>
+    </section>
+
+    <!-- 05 CONTACT -->
+    <section id="contact">
+      <div class="sec-head reveal">
+        <span class="sec-no">05</span>
+        <span class="sec-tag">CONTACT — 联系</span>
+      </div>
+      <h2 class="contact-title display">
+        <span class="line l1"><span>LET'S</span></span>
+        <span class="line l2"><span>TALK<span class="arr">↗</span></span></span>
+      </h2>
+      <a class="talk-btn magnetic reveal" href="mailto:617111647@qq.com">617111647@qq.com ↗</a>
+
+      <footer class="footer">
+        <span>© 2026 JOHNNY'S PORTFOLIO</span>
+        <span class="foot-links">
+          <a href="#">GitHub</a><a href="#">Instagram</a><a href="#">Behance</a>
+        </span>
+        <a href="#hero">BACK TO TOP ↑</a>
+      </footer>
+    </section>
+  </main>
+
+  <script src="js/main.js?v=11"></script>
+</body>
+</html>

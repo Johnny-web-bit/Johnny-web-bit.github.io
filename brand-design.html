@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>品牌设计 — Johnny's Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=19" />
+</head>
+<body class="sub">
+
+  <!-- 底部导航 Dock：链接指向首页对应区块 -->
+  <header class="dock" id="dock">
+    <a class="dock-brand display" href="index.html">JN<span>®</span></a>
+    <nav class="dock-nav">
+      <a href="index.html#about">关于</a>
+      <a href="index.html#works">作品</a>
+      <a href="index.html#services">能力</a>
+      <a href="index.html#contact">联系</a>
+    </nav>
+    <a class="dock-cta magnetic" href="mailto:617111647@qq.com">开始项目 ↗</a>
+  </header>
+
+  <!-- 返回 -->
+  <a class="back-link" href="index.html">← BACK HOME</a>
+
+  <!-- 子页 Hero -->
+  <header class="sub-hero">
+    <div class="sub-kicker reveal">
+      <span>02 — SERVICE</span>
+      <span>服务</span>
+    </div>
+    <p class="sub-intro reveal" style="--d:.08s">
+      德国 Toplite 公司品牌形象升级。
+      <!-- TODO: 待补充品牌设计页面的详细介绍文案 -->
+    </p>
+    <h1 class="sub-title display reveal" style="--d:.16s">
+      <span class="cn">品牌设计</span>
+      <span class="en en-box">Brand Design</span>
+    </h1>
+  </header>
+
+  <!-- 作品墙：首次滚入时图框果冻式自由落体错峰坠落，落定后缓慢漂浮 -->
+  <section class="fall-section" id="fall">
+    <div class="sec-head reveal">
+      <span class="sec-no">W.</span>
+      <span class="sec-tag">SELECTED WORKS — 作品</span>
+    </div>
+    <!-- TODO: 替换为真实品牌设计作品图片（assets/brand/p01-06.jpg） -->
+    <div class="fall-stage">
+      <div class="fall-grid" id="fallRing">
+        <figure class="fall-card"><img src="assets/brand/p01.jpg" alt="品牌设计 01" loading="lazy" /></figure>
+        <figure class="fall-card"><img src="assets/brand/p02.jpg" alt="品牌设计 02" loading="lazy" /></figure>
+        <figure class="fall-card"><img src="assets/brand/p03.jpg" alt="品牌设计 03" loading="lazy" /></figure>
+        <figure class="fall-card"><img src="assets/brand/p04.jpg" alt="品牌设计 04" loading="lazy" /></figure>
+        <figure class="fall-card"><img src="assets/brand/p05.jpg" alt="品牌设计 05" loading="lazy" /></figure>
+        <figure class="fall-card"><img src="assets/brand/p06.jpg" alt="品牌设计 06" loading="lazy" /></figure>
+      </div>
+    </div>
+    <div class="strip-hint reveal">
+      <span>6 WORKS — 自由落体 · 悬停变色</span>
+      <span>JELLY DROP · HOVER FOR COLOR</span>
+    </div>
+  </section>
+
+  <!-- 底部 CTA -->
+  <footer class="sub-footer">
+    <a class="sub-cta display reveal" href="index.html#contact"><span class="cta-roll"><span class="cta-line">开始项目</span><span class="cta-line cta-ghost" aria-hidden="true">开始项目</span></span><span class="cta-roll cta-arr-roll"><span class="cta-line">↗</span><span class="cta-line cta-ghost" aria-hidden="true">↗</span></span></a>
+    <div class="sub-copy">
+      <span>© 2026 JOHNNY'S PORTFOLIO</span>
+      <span>BRAND DESIGN</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=11"></script>
+</body>
+</html>
