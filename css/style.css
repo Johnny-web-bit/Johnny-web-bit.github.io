@@ -932,10 +932,11 @@ body.sub { background: var(--ink); color: var(--white); }
   .works-head .outline { -webkit-text-stroke: 0; color: var(--ink); padding: 0 5vw; }   /* 手机上"作品"改实心黑 */
   /* 触屏 tap 会留下粘滞 :hover，多个绝对定位说明同时浮现互相重叠 → 手机上隐藏 */
   .sr-detail { display: none; }
-  /* 手机无 hover：底部大按钮直接呈现描边镂空版。中文笔画密，描边必须细+字大，
-     否则笔画间隙被吃掉（"栅栏"粘连） */
-  .sub-cta { font-size: clamp(54px, 12.5vw, 96px); }
-  .sub-cta .cta-line { -webkit-text-stroke: 1.1px var(--white); color: transparent; }
+  /* 手机无 hover：双层滚动置换结构在触屏上会因粘滞 :hover 把两层同时拉出
+     （双线错位穿插如栅栏）→ 彻底废掉双层，只留一层描边镂空字 */
+  .sub-cta .cta-ghost { display: none !important; }
+  .sub-cta .cta-line { transform: none !important; -webkit-text-stroke: 1.1px var(--white); color: transparent; }
+  .sub-cta:hover .cta-line { transform: none !important; }
   /* 顶部小字居中，与下方双行大标题的中轴对应 */
   .hero-tag { left: 0; right: 0; text-align: center; }
   /* 次级页顶部：92vh 几乎满屏、标题沉底 → 手机上压缩留白 */
