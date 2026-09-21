@@ -10,7 +10,6 @@
   .rs-photo { width: 30vw; }
   .rs-head { padding-top: 0; flex: 1; text-align: left; }   /* "个人经历"左对齐 */
   .rs-title { font-size: 16vw; }
-  .rs-meta { display: none; }   /* 散点 meta 与并排布局冲突，隐藏 */
   .rs-photo figcaption { flex-wrap: wrap; gap: 8px; }   /* 窄图下标注不换行会撑破视口 */
   .rs-block:nth-child(2), .rs-block:nth-child(3) { margin-left: 0; }
   .rs-block { grid-template-columns: 1fr; gap: 20px; }

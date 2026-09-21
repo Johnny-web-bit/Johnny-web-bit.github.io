@@ -335,14 +335,7 @@ section { position: relative; }
 /* 英文行：宽字距收缩归位 */
 .rs-en.reveal { opacity: 0; letter-spacing: 0.6em; transition: opacity 0.9s ease 0.45s, letter-spacing 1.2s var(--ease-out) 0.45s; }
 .rs-en.reveal.in { opacity: 1; letter-spacing: 0.32em; }
-/* 左下散点 meta（照片已移至右侧，meta 避开照片区域换到左下） */
-.rs-meta {
-  position: absolute; left: 2vw; bottom: 0;
-  display: flex; flex-direction: column; gap: 4px;
-  text-align: left;
-  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--grey);
-}
+/* rs-meta 装饰散点已随左对齐布局移除（与标题英文行重叠） */
 /* 三组经历：描边序号锚点 + 错位递进 */
 .rs-blocks {
   display: flex; flex-direction: column; gap: 11vh;
