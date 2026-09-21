@@ -69,6 +69,11 @@
   .rs-title { line-height: 1.06; }
   .rs-title i { margin: 0 1vw; }
   .sub-title .en { -webkit-text-stroke-width: 1.4px; }   /* 英文描边保留空心 */
+  /* 平面设计页海报/KV 分类行：纸白底块在全黑页面上突兀 → 手机上融入黑底白字 */
+  .sub-cats { background: transparent; color: var(--white); padding: 3vh 0 5vh; }
+  .sub-cats .service-row { border-top-color: var(--line-dark); }
+  .sub-cats .service-list { border-bottom-color: var(--line-dark); }
+  .sub-cats .service-row:active { background: rgba(255, 255, 255, 0.08); color: var(--white); }
 
   /* —— 留白与导航 —— */
   #about { padding: 10vh 6vw 12vh; }
