@@ -241,6 +241,7 @@
     var kvMomentum = 0;                   /* 滚轮动量（deltaY>0 = 内容上移） */
     var kvWheelT = -1e4;                  /* 最近一次滚轮输入时刻 */
     var kvHold = false;                   /* 触屏按住暂停（手机上保持轮播形态，手指按住即停） */
+    var kvSq = 0, kvVel = 0;              /* 触屏果冻挤压：拖动速度→软弹簧形变（越靠边缘压越深） */
     var kvLast = performance.now();
     /* 周期化取模：把卡的位置折到 ±半周期内（折返点在视窗外，循环无缝） */
     function kvY(i, ringH, period) {
@@ -340,6 +341,7 @@
         var t = e.touches[0];
         var dy = t.clientY - kvTY;
         kvTX = t.clientX; kvTY = t.clientY;
+        kvVel = kvVel * 0.65 + dy * 0.35;   /* 拖动速度（低通滤波，供果冻形变用） */
         /* touch-action:none 已禁止浏览器接管（820 断点），preventDefault 双保险；
            整个舞台的手指拖动都驱动轮播，页面滚动走舞台以外区域 */
         e.preventDefault();
@@ -391,10 +393,23 @@
         kvSetHot(hit);
         kvCards.forEach(function (c, kk) { c.classList.toggle("on", kk === hit); });
       }
-      /* 纯纵向循环滚动：无透视变形（用户要求去除滚筒透视） */
+      /* 纯纵向循环滚动：无透视变形（用户要求去除滚筒透视）。
+         触屏拖动时叠加果冻挤压（软弹簧，体积守恒）——越靠舞台边缘压得越深，
+         像被边缘"吸进去"的绵软形变；松手后自然回弹归零 */
+      var sqT = (!finePointer && kvHold) ? Math.min(0.3, Math.abs(kvVel) * 0.014) : 0;
+      kvSq += (sqT - kvSq) * 0.085;
+      kvVel *= 0.9;
+      var edgeHalf = (ringH + kvGap) * 2;
       for (var i = 0; i < kvN; i++) {
         var y = kvY(i, ringH, period);
-        kvCards[i].style.transform = "translateY(" + y.toFixed(1) + "px)";
+        if (kvSq > 0.004) {
+          var edge = Math.min(1, Math.abs(y) / edgeHalf);
+          var sq = kvSq * (0.5 + edge * 0.5);
+          kvCards[i].style.transform =
+            "translateY(" + y.toFixed(1) + "px) scale(" + (1 + sq * 0.4).toFixed(3) + "," + (1 - sq).toFixed(3) + ")";
+        } else {
+          kvCards[i].style.transform = "translateY(" + y.toFixed(1) + "px)";
+        }
       }
       requestAnimationFrame(kvLoop);
     })(kvLast);

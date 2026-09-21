@@ -40,7 +40,7 @@ add("CSS 引擎", fs === 100, "字号计算 " + fs + "px");
 t.remove();
 fetch("/?diag=" + Date.now(), {cache:"no-store"}).then(function(r){return r.text()}).then(function(txt){
   var hasRedirect = txt.indexOf("location.replace") > -1;
-  var hasV23 = txt.indexOf("style.css?v=25") > -1;
+  var hasV23 = txt.indexOf("style.css?v=26") > -1;
   add("首页为新版本", hasV23 && !hasRedirect, hasRedirect ? "仍在返回旧版——浏览器/网络缓存劫持" : "最新版已生效");
   add("首页内容完整", txt.indexOf("hero-title") > -1);
 }).catch(function(e){ add("首页拉取", false, String(e).slice(0,60)); });
