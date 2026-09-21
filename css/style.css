@@ -941,6 +941,21 @@ body.sub { background: var(--ink); color: var(--white); }
   .service-row:active { background: var(--paper); color: var(--black); }
   .work-card:active { transform: scale(0.985); }
 
+  /* —— 手机版可读性修复 ——
+     1) 描边空心中文字在手机小屏上是墨团（2px 描边+透明填充，笔画细密的
+        中文字互相粘连），手机上统一改实心黑字，桌面保留空心风格 */
+  .about-manifesto .em {
+    -webkit-text-stroke: 0;
+    color: var(--ink);
+  }
+  /* 2) 中文方块字杜绝行行重叠：大字行高从 0.9 放宽 */
+  .about-manifesto { line-height: 1.14; }
+  .sub-title .cn { line-height: 1.08; }
+  .rs-title { line-height: 1.06; }
+  .rs-title i { margin: 0 1vw; }
+  /* 3) 中文描边字（子页 .en 英文描边不受影响，保留空心） */
+  .sub-title .en { -webkit-text-stroke-width: 1.4px; }
+
   .hl1 { left: 6vw; right: 6vw; top: 12vh; }
   .hl2 { right: 2vw; top: 12vh; }
   .dock { max-width: calc(100vw - 16px); }

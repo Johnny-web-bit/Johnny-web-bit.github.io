@@ -4,6 +4,8 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  /* 老设备保险丝：缺 IntersectionObserver 时全部走兜底路径，绝不让一行报错中断整个脚本 */
+  var hasIO = typeof IntersectionObserver !== "undefined";
 
   /* ---------- 加载页 ---------- */
   var loader = document.getElementById("loader");
@@ -37,35 +39,43 @@
   }
 
   /* ---------- 滚动进场 ---------- */
-  var io = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          e.target.classList.add("in");
-          io.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
-  );
-  document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  if (hasIO) {
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+    );
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+  }
 
   /* ---------- Contact 标题 line-mask 进场 ---------- */
   var contactTitle = document.querySelector(".contact-title");
   if (contactTitle) {
-    var ctIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          contactTitle.classList.add("l-in");
-          ctIO.unobserve(contactTitle);
-        }
-      });
-    }, { threshold: 0.35 });
-    ctIO.observe(contactTitle);
+    if (!hasIO) {
+      contactTitle.classList.add("l-in");
+    } else {
+      var ctIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            contactTitle.classList.add("l-in");
+            ctIO.unobserve(contactTitle);
+          }
+        });
+      }, { threshold: 0.35 });
+      ctIO.observe(contactTitle);
+    }
   }
 
   /* ---------- 项目经历：年份数字翻滚收敛（odometer） ---------- */
-  if (!reduced) {
+  if (!reduced && hasIO) {
     document.querySelectorAll(".rs-year").forEach(function (el) {
       var target = el.textContent;
       var yIO = new IntersectionObserver(function (entries) {
@@ -88,21 +98,23 @@
 
   /* ---------- Dock 高亮当前区块 ---------- */
   var links = document.querySelectorAll(".dock-nav a");
-  var secIO = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        links.forEach(function (a) {
-          a.classList.toggle("active", a.dataset.sec === e.target.id);
+  if (hasIO) {
+    var secIO = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          links.forEach(function (a) {
+            a.classList.toggle("active", a.dataset.sec === e.target.id);
+          });
         });
-      });
-    },
-    { rootMargin: "-42% 0px -52% 0px" }
-  );
-  ["about", "resume", "works", "services", "contact"].forEach(function (id) {
-    var s = document.getElementById(id);
-    if (s) secIO.observe(s);
-  });
+      },
+      { rootMargin: "-42% 0px -52% 0px" }
+    );
+    ["about", "resume", "works", "services", "contact"].forEach(function (id) {
+      var s = document.getElementById(id);
+      if (s) secIO.observe(s);
+    });
+  }
 
   /* ---------- 全局滚动/指针动效循环 ---------- */
   var heroBg = document.getElementById("heroBg");
@@ -396,13 +408,22 @@
     if (fSimple) fallRing.classList.add("fall-simple");
 
     if (!fSimple) {
-      var fIO = new IntersectionObserver(function (entries) {
-        if (fStarted || !entries[0].isIntersecting) return;
-        fStarted = true;
-        fT0 = performance.now();
-        fIO.disconnect();
-      }, { threshold: 0.22 });
-      fIO.observe(fallRing);
+      var fIO = null;
+      if (hasIO) {
+        fIO = new IntersectionObserver(function (entries) {
+          if (fStarted || !entries[0].isIntersecting) return;
+          fStarted = true;
+          fT0 = performance.now();
+          fIO.disconnect();
+        }, { threshold: 0.22 });
+        fIO.observe(fallRing);
+      } else {
+        /* 无 IO 兜底：直接启动落体（若立即启动，进场时大部分卡还在视口外——
+           改用一次性定时器等半秒，近似"滚入视口才开始"的效果） */
+        setTimeout(function () {
+          if (!fStarted) { fStarted = true; fT0 = performance.now(); }
+        }, 600);
+      }
 
       if (finePointer) {
         fCards.forEach(function (c, i) {
@@ -519,34 +540,44 @@
     var entryDone = stripItems.map(function () { return false; });
     var entryCSS = stripItems.map(function () { return false; });
     var entryBusy = true;
-    var entryIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        entryIO.unobserve(strip);
-        stripItems.forEach(function (_, i) {
-          var dist = Math.abs(i + 0.5 - c);
+    /* 释放序列提取为独立函数：IO 回调与无 IO 兜底共用 */
+    var entryRelease = function () {
+      entryBusy = true;
+      stripItems.forEach(function (_, i) {
+        var dist = Math.abs(i + 0.5 - c);
+        setTimeout(function () {
+          entryCSS[i] = true;
+          var it = stripItems[i];
+          it.style.transition = "transform 0.95s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease-out";
+          it.classList.add("is-in");
+          it.style.transform =
+            "translate3d(" + layoutX[i].toFixed(1) + "px,0px,0px) rotateY(" + tilts[i].toFixed(2) + "deg)";
           setTimeout(function () {
-            entryCSS[i] = true;
-            var it = stripItems[i];
-            it.style.transition = "transform 0.95s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease-out";
-            it.classList.add("is-in");
-            it.style.transform =
-              "translate3d(" + layoutX[i].toFixed(1) + "px,0px,0px) rotateY(" + tilts[i].toFixed(2) + "deg)";
-            setTimeout(function () {
-              /* 过渡完成后把弹簧状态同步到落位值，交还 rAF 接管悬停交互 */
-              var st = stripState[i];
-              st.x = layoutX[i]; st.y = 0; st.z = 0; st.s = 1; st.r = tilts[i];
-              st.vx = 0; st.vy = 0; st.vz = 0; st.vs = 0; st.vr = 0; st.sq = 0; st.sqv = 0;
-              it.style.transition = "";
-              entryCSS[i] = false;
-              entryDone[i] = true;
-            }, 1000);
-          }, 150 + dist * 115);
-        });
-        setTimeout(function () { entryBusy = false; }, 150 + c * 115 + 1100);
+            /* 过渡完成后把弹簧状态同步到落位值，交还 rAF 接管悬停交互 */
+            var st = stripState[i];
+            st.x = layoutX[i]; st.y = 0; st.z = 0; st.s = 1; st.r = tilts[i];
+            st.vx = 0; st.vy = 0; st.vz = 0; st.vs = 0; st.vr = 0; st.sq = 0; st.sqv = 0;
+            it.style.transition = "";
+            entryCSS[i] = false;
+            entryDone[i] = true;
+          }, 1000);
+        }, 150 + dist * 115);
       });
-    }, { threshold: 0.4 });
-    entryIO.observe(strip);
+      setTimeout(function () { entryBusy = false; }, 150 + c * 115 + 1100);
+    };
+    if (hasIO) {
+      var entryIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          entryIO.unobserve(strip);
+          entryRelease();
+        });
+      }, { threshold: 0.4 });
+      entryIO.observe(strip);
+    } else {
+      /* 无 IO 兜底：页面打开 0.8 秒后直接播放书页展开 */
+      setTimeout(entryRelease, 800);
+    }
 
     /* —— 槽位判定（根治频闪）：激活卡是指针坐标的纯函数，与卡片变换/展开态完全解耦 ——
        旧方案 mouseenter + elementFromPoint 的死穴：4:3 卡激活时 width 168→299px 有
